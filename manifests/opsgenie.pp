@@ -10,7 +10,7 @@ class sensu_handlers::opsgenie inherits sensu_handlers {
     config  => {
       teams => $teams,
     },
-    require => [ Package['sensu-community-plugins'] ],
+    require => [ $package_plugin_require ],
   }
   # If we are going to send pagerduty alerts, we need to be sure it actually is up
   monitoring_check { 'check_opsgenie':

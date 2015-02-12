@@ -11,7 +11,7 @@ class sensu_handlers::nodebot inherits sensu_handlers {
     config  => {
       teams => $teams,
     },
-    require => Package['sensu-community-plugins'];
+    require => $package_plugin_require;
   }
 
 }

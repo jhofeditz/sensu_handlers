@@ -47,6 +47,7 @@ class sensu_handlers(
   $jira_site             = "jira.${::domain}",
   $include_graphite      = true,
   $include_aws_prune     = true,
+  $require_community_plugins = true,
   $region                = $::datacenter,
   $dashboard_link        = "https://sensu.${::domain}",
 ) {
@@ -54,8 +55,12 @@ class sensu_handlers(
   validate_hash($teams)
   validate_bool($include_graphite, $include_aws_prune)
 
-  ensure_packages(['sensu-community-plugins'])
-
+  if $require_community_plugins {
+    ensure_packages(['sensu-community-plugins'])
+    $plugin_package_require = Package['sensu-community-plugins']
+  }else{
+    $plugin_package_require = []
+  }
   file { '/etc/sensu/handlers/base.rb':
     source => 'puppet:///modules/sensu_handlers/base.rb',
     mode   => '0644',
